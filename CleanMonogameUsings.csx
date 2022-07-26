@@ -1,6 +1,14 @@
+/*
+This script cleans unnecessary usings in MonoGame 3.8.1 solution when performing a migration. 
+It cleans all Microsoft.Xna.Framework.* usings which are no longer required implicitely due to global using feature available in C# 10.
+Usage:
+1) launch Developer command prompt (standard CMD won't work)
+2) type in "csi CleanMonogameUsings.csx c:\path\to\your\solution\folder"
+*/
+
+
 using System.Text.RegularExpressions;
 
-//var path = @"C:\github\VornWinter";
 var parameters = Environment.GetCommandLineArgs();
 if (Args.Count() != 1)
 {
