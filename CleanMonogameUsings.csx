@@ -3,8 +3,8 @@ This script cleans unnecessary usings in MonoGame 3.8.1 solution when performing
 It cleans all Microsoft.Xna.Framework.* usings which are no longer required implicitely due to global using feature available in C# 10.
 Usage:
 1) launch Developer Command Prompt (standard CMD won't work)
-2) type in "csi CleanMonogameUsings.csx c:\path\to\your\solution\folder c:\path\to\your\solution\GlobalUsings.cs" 
-3) add the newly generated file to all projects (suggestion: add as link to Properties)
+2) type in "csi CleanMonogameUsings.csx c:\path\to\your\solution\folder" 
+3) run the script
 */
 
 
