@@ -12,9 +12,9 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 var parameters = Environment.GetCommandLineArgs();
-if (Args.Count() != 2)
+if (Args.Count() != 1)
 {
-    throw new ArgumentException($"Use two parameters - path to folder with solution & path to generated file with global usings. Used {Args.Count()} parameters");
+    throw new ArgumentException($"Use one parameter - path to folder with solution. Used {Args.Count()} parameters");
 }
 var files = Directory.GetFiles(Args[0], "*.cs", SearchOption.AllDirectories);
 var usingToClean = "using Microsoft.Xna.Framework";
@@ -44,10 +44,21 @@ foreach (string file in files)
     }
 }
 
-//Generate global using file
+//Generate global usings
 usingsList = usingsList
     .Distinct()
-    .Select(line => $"global {line}")
+    .Select(line => line.Replace("using",string.Empty))
+    .Select(line => line.Trim())
+    .Select(line => $"<Using Include=\"{line.Replace(";",string.Empty)}\" />")
     .ToList();
-
-File.WriteAllLines(Args[1], usingsList);
+usingsList.Insert(0, "<ItemGroup>");
+usingsList.Add("</ItemGroup>");
+usingsList.Add("</Project>");
+     
+//append global usings to project files
+var projectFiles = Directory.GetFiles(Args[0], "*.csproj", SearchOption.AllDirectories);
+foreach (string file in projectFiles)
+{
+    File.WriteAllText(file, File.ReadAllText(file).Replace("</Project>", string.Empty));
+    File.AppendAllLines(file, usingsList);
+}
